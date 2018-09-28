@@ -9,11 +9,11 @@ This tool is designed to change a users password for terraform enterprise
 
 ## example usage
 
-		tfe_passwd.py joe_user update joes_old_pass joes_new_pass
-		tfe_passwd.py joe_user verify joes_new_pass
+	tfe_passwd.py joe_user update joes_old_pass joes_new_pass
+	tfe_passwd.py joe_user verify joes_new_pass
 
+	tfe_passwd.py -h
 
-	```
 	usage: tfe_passwd.py [-h] [-v | -q]
 											 [--loglvl {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 											 [--logfile LOGFILE] [--logfmt LOGFMT]
