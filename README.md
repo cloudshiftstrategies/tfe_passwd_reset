@@ -9,33 +9,25 @@ This tool is designed to change a users password for terraform enterprise
 
 ## example usage
 
-	tfe_passwd.py joe_user update joes_old_pass joes_new_pass
-	tfe_passwd.py joe_user verify joes_new_pass
+### Change joe_user's password to a specific string
 
-	tfe_passwd.py -h
+	$ tfe_passwd.py joe_user update joes_old_pass --newpass joes_new_pass
+	Changing password for username: joe_user at https://app.terraform.io
+	SUCCESS: Changed password for user: joe_user to joes_new_pass
 
-	usage: tfe_passwd.py [-h] [-v | -q]
-	[--loglvl {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
-	[--logfile LOGFILE] [--logfmt LOGFMT]
-	 {update,validate} ...
+### Change joe_user's password to a random string
 
-	Manages a Terraform Enterprise user's password
+	$ tfe_passwd.py joe_user update joes_old_pass --random
+	Changing password for username: joe_user at https://app.terraform.io
+	SUCCESS: Changed password for user: joe_user to KXZJXJC354
 
-	optional arguments:
-		-h, --help            show this help message and exit
-		-v, --verbose         Increse logging output
-		-q, --quiet           Decrease logging output
+### Validate joes_user's password
 
-	Available subcommands:
-		{update,validate}
-			update
-			validate
+	$ tfe_passwd.py validate joe_user KXZJXJC354
+	SUCCESS: Login for: joe_user Succeeded
 
-	logging:
-		Detailed control of logging output
+## Get help output
 
-		--loglvl {DEBUG,INFO,WARNING,ERROR,CRITICAL}
-			Set explicit log level
-		--logfile LOGFILE     Ouput log messages to file
-		--logfmt LOGFMT       Log message format
-	```
+	$ tfe_passwd.py -h
+	$ tfe_passwd.py update -h
+	$ tfe_passwd.py validate -h

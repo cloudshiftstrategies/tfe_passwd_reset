@@ -23,7 +23,7 @@ def _login(username, password, base_url):
     # Get the login page
     logging.debug(f"Requesting login page via GET: {login_url}")
     try:
-        response = client.get(login_url)#, verify=False)
+        response = client.get(login_url)
     except:
         logging.error(f"Unable to open login URL: {login_url}")
         return False
@@ -46,7 +46,7 @@ def _login(username, password, base_url):
     }
     # Now log in
     logging.debug(f"Logging in with POST: {login_url}")
-    response = client.post( login_url, data = payload, headers = dict(referer=login_url))#, verify=False)
+    response = client.post( login_url, data = payload, headers = dict(referer=login_url))
     if response.status_code != 200:
         logging.error(f"Unable to login to {login_url} with username: {username}. Got Status code: {response.status_code}")
         return False
@@ -75,15 +75,15 @@ def validate(username, password, tfe_url=default_tfe_url):
     logging.debug(f"Password: {password}")
     client = _login(username, password, tfe_url)
     if client:
-        logging.info(f"SUCCESS! Login for: {username} Succeeded")
+        logging.info(f"SUCCESS: Login for: {username} Succeeded")
         sys.exit(0)
     else:
-        logging.error(f"ERROR! Login for: {username} Failed")
+        logging.error(f"ERROR: Login for: {username} Failed")
         sys.exit(1)
 
 
 @begin.subcommand
-def update(username, oldpass, newpass, tfe_url=default_tfe_url):
+def update(username, oldpass, newpass='', random=False, tfe_url=default_tfe_url):
 
     password_api = tfe_url + '/api/v2/account/password'
     password_url = tfe_url + '/app/settings/password'
@@ -92,9 +92,12 @@ def update(username, oldpass, newpass, tfe_url=default_tfe_url):
     logging.debug(f"Old password: {oldpass}")
     logging.debug(f"New password: {newpass}")
 
+    if newpass == '' and random:
+        newpass = _random_password()
+
     client = _login(username, oldpass, tfe_url)
     if not client:
-        logging.error(f"ERROR! Login for: {username} Failed")
+        logging.error(f"ERROR: Login for: {username} Failed")
         sys.exit(1)
 
     logging.debug(f"GET password page: {password_url}")
@@ -125,7 +128,7 @@ def update(username, oldpass, newpass, tfe_url=default_tfe_url):
     logging.debug(f"Calling password change api: {password_api}")
     response = client.patch(password_api, data=payload, headers=headers)
     if response.status_code == 200:
-        logging.info(f"SUCCESS: Changed password for user: {username}")
+        logging.info(f"SUCCESS: Changed password for user: {username} to {newpass}")
         sys.exit(0)
     else:
         logging.debug(f"ERROR: Password change request at {password_api} returned status_code: {response.status_code}")
