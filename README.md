@@ -35,7 +35,7 @@ This tool is designed to change a users password for terraform enterprise
 		Detailed control of logging output
 
 		--loglvl {DEBUG,INFO,WARNING,ERROR,CRITICAL}
-													Set explicit log level
+			Set explicit log level
 		--logfile LOGFILE     Ouput log messages to file
 		--logfmt LOGFMT       Log message format
 	```
