@@ -15,9 +15,9 @@ This tool is designed to change a users password for terraform enterprise
 	tfe_passwd.py -h
 
 	usage: tfe_passwd.py [-h] [-v | -q]
-											 [--loglvl {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
-											 [--logfile LOGFILE] [--logfmt LOGFMT]
-											 {update,validate} ...
+	[--loglvl {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
+	[--logfile LOGFILE] [--logfmt LOGFMT]
+	 {update,validate} ...
 
 	Manages a Terraform Enterprise user's password
 
