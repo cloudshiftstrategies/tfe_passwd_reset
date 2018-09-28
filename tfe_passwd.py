@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 from bs4 import BeautifulSoup
-import begin, logging, requests, sys, json
+import begin, logging, requests, sys, json, random, string
 
 default_tfe_url='https://app.terraform.io'
+
+def _random_password():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
 
 def _login(username, password, base_url):
     """
@@ -66,20 +69,6 @@ def _login(username, password, base_url):
         logging.debug(f"Successfully logged in to {response.url}")
     return client
 
-def _request(client, request_str):
-    try:
-        response = client.get(
-            settings.SES_WEB_BASE_URL + request_str,
-            #auth=HTTPBasicAuth(settings.SES_WEB_USERNAME, settings.SES_WEB_PASSWORD),
-            # TODO: Enable SSL verification for ses api
-            # For some reason, we cant verify the ssl cert of ses api server, so we've set verify=False
-            #verify=False
-        )
-    except requests.exceptions.ConnectionError:
-        raise
-    return response
-
-
 @begin.subcommand
 def validate(username, password, tfe_url=default_tfe_url):
     logging.debug(f"Validating password for username: {username} at url: {tfe_url}")
@@ -98,7 +87,6 @@ def update(username, oldpass, newpass, tfe_url=default_tfe_url):
 
     password_api = tfe_url + '/api/v2/account/password'
     password_url = tfe_url + '/app/settings/password'
-    test_url = tfe_url + '/app/cloudshiftstrategies'
 
     logging.info(f"Changing password for username: {username} at {tfe_url}")
     logging.debug(f"Old password: {oldpass}")
